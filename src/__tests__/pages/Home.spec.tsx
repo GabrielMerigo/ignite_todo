@@ -1,27 +1,28 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, screen } from '@testing-library/react-native';
 
 import { Home } from '../../pages/Home';
 
 describe('Home', () => {
   it('should be able to render new added tasks', () => {
-    const { getByPlaceholderText, getByText } = render(<Home />);
+    const { getByPlaceholderText, getByText, getByTestId } = render(<Home />);
     const inputElement = getByPlaceholderText('Adicionar novo todo...');
+    const buttonElement = getByTestId('add-new-task-button');
 
-    expect(getByText('0 tarefas'));
+    expect(getByText(/0 tarefas/i));
 
     fireEvent.changeText(inputElement, 'Primeira tarefa');
-    fireEvent(inputElement, 'submitEditing');
-    
-    expect(getByText('Primeira tarefa'));
-    expect(getByText('1 tarefa'));
+    fireEvent.press(buttonElement);
+    expect(inputElement.props.value).toBe('Primeira tarefa');
 
     fireEvent.changeText(inputElement, 'Segunda tarefa');
-    fireEvent(inputElement, 'submitEditing');
+    fireEvent.press(buttonElement);
+    expect(inputElement.props.value).toBe('Segunda tarefa');
 
-    expect(getByText('Primeira tarefa'));
-    expect(getByText('Segunda tarefa'));
-    expect(getByText('2 tarefas'));
+
+    expect(getByText(/Primeira tarefa/i));
+    expect(getByText(/Segunda tarefa/i));
+    expect(getByText(/2 tarefas/i));
   });
 
   it('should be able to render tasks as done and undone', () => {
