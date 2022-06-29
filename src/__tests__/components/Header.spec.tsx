@@ -9,7 +9,7 @@ describe("Header", () => {
     const { getByText, rerender } = render(
       <Header tasksCounter={mockedTasksCounter} />
     );
-
+      
     expect(getByText("0 tarefas"));
 
     mockedTasksCounter = 1;
