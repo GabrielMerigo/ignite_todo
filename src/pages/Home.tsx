@@ -9,32 +9,40 @@ export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   function handleAddTask(newTaskTitle: string) {
-    const newTask = {
-      id: new Date().getTime(),
-      title: newTaskTitle,
-      done: false
-    }
-
-    setTasks([...tasks, newTask])
+      setTasks((state) => [...state, {
+        id: new Date().getTime(),
+        title: newTaskTitle,
+        done: false
+      }])
   }
 
   function handleToggleTaskDone(id: number) {
-    const tasksUpdated = tasks.map(task => ({ ...task }))
-    const currentTask = tasksUpdated.find(task => task.id === id)
-    currentTask!.done = !currentTask!.done
-    setTasks(tasksUpdated)
+    const newTasksList = tasks.map((item) => {
+      if (item.id === id) {
+        return {
+          ...item,
+          done: !item.done
+        }
+      } else {
+        return item;
+      }
+    });
+
+    setTasks(newTasksList);
   }
 
   function handleRemoveTask(id: number) {
-    const tasksFiltered = tasks.filter(task => task.id !== id);
-    setTasks(tasksFiltered)
+    const newFilteredTaskList = tasks.filter((item) => item.id !== id);
+
+    setTasks(newFilteredTaskList);
   }
 
   return (
     <View style={styles.container}>
       <Header tasksCounter={tasks.length} />
-    
-      <TodoInput addTask={(e) => handleAddTask(e)} />
+
+      <TodoInput addTask={handleAddTask} />
+      
 
       <TasksList 
         tasks={tasks} 
