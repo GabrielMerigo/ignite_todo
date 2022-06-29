@@ -10,15 +10,17 @@ describe('TodoInput', () => {
   })
 
   it('should be able to submit the input text by "submitEditing" event', async () => {
-    const { getByPlaceholderText } = render(<TodoInput addTask={mockedAddTask} />);
+    const { getByPlaceholderText, getByTestId } = render(<TodoInput addTask={mockedAddTask} />);
     const inputText = getByPlaceholderText('Adicionar novo todo...');
     
+    const buttonAddNewTask = getByTestId('add-new-task-button');
     fireEvent.changeText(inputText, 'Primeira task');
-    fireEvent(inputText, 'submitEditing');
+    fireEvent.press(buttonAddNewTask)
 
     expect(mockedAddTask).toHaveBeenCalledWith('Primeira task');
     expect(inputText).toHaveProp('value', '');
   });
+  
 
   it('should be able to submit the input text by addButton', () => {
     const { getByPlaceholderText, getByTestId } = render(<TodoInput addTask={mockedAddTask} />);

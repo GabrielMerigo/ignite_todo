@@ -12,12 +12,12 @@ describe('Home', () => {
     expect(getByText(/0 tarefas/i));
 
     fireEvent.changeText(inputElement, 'Primeira tarefa');
-    fireEvent.press(buttonElement);
     expect(inputElement.props.value).toBe('Primeira tarefa');
+    fireEvent.press(buttonElement);
 
     fireEvent.changeText(inputElement, 'Segunda tarefa');
-    fireEvent.press(buttonElement);
     expect(inputElement.props.value).toBe('Segunda tarefa');
+    fireEvent.press(buttonElement);
 
 
     expect(getByText(/Primeira tarefa/i));
@@ -28,9 +28,10 @@ describe('Home', () => {
   it('should be able to render tasks as done and undone', () => {
     const { getByPlaceholderText, getByText, getByTestId } = render(<Home />);
     const inputElement = getByPlaceholderText('Adicionar novo todo...');
+    const buttonAddNewTask = getByTestId('add-new-task-button');
 
     fireEvent.changeText(inputElement, 'Primeira tarefa');
-    fireEvent(inputElement, 'submitEditing');
+    fireEvent.press(buttonAddNewTask);
 
     const buttonElement = getByTestId('button-0');
     const markerElement = getByTestId('marker-0');
@@ -72,12 +73,12 @@ describe('Home', () => {
   it('should be able to remove tasks after the trash icon was pressed', async () => {
     const { getByPlaceholderText, getByText, getByTestId, queryByText } = render(<Home />);
     const inputElement = getByPlaceholderText('Adicionar novo todo...');
+    const buttonAddNewTask = getByTestId('add-new-task-button');
 
     fireEvent.changeText(inputElement, 'Primeira tarefa');
-    fireEvent(inputElement, 'submitEditing');
-    
+    fireEvent.press(buttonAddNewTask);
     fireEvent.changeText(inputElement, 'Segunda tarefa');
-    fireEvent(inputElement, 'submitEditing');
+    fireEvent.press(buttonAddNewTask);
 
     const firstTaskTrashIcon = getByTestId('trash-0');
 
