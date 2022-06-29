@@ -39,7 +39,7 @@ export function TasksList({ tasks, toggleTaskDone, removeTask }: TasksListProps)
                   testID={`marker-${index}`}
                   //TODO - use style prop 
                 >
-                  { item.done && (
+                  {item.done && (
                     <Icon 
                       name="check"
                       size={12}

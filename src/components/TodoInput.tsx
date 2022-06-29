@@ -1,36 +1,54 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 interface TodoInputProps {
   addTask: (task: string) => void;
 }
 
 export function TodoInput({ addTask }: TodoInputProps) {
-  // const [task, setTask] = useState('');
+  const [task, setTask] = useState('');
+  const [showAlert, setShowAlert] = useState(false)
 
-  function handleAddNewTask() {
-    //TODO - Call addTask if task not empty and clean input value 
+  function handleAddNewTask(task: string) {
+    if (!task) return setShowAlert(true)
+    addTask(task)
   }
 
   return (
     <View style={styles.inputContainer}>
-      <TextInput 
-        style={styles.input} 
+      <TextInput
+        style={styles.input}
         placeholder="Adicionar novo todo..."
         placeholderTextColor="#B2B2B2"
         returnKeyType="send"
         selectionColor="#666666"
-        //TODO - use value, onChangeText and onSubmitEditing props
+        value={task}
+        onChangeText={(e) => setTask(e)}
       />
       <TouchableOpacity
         testID="add-new-task-button"
         activeOpacity={0.7}
         style={styles.addButton}
-        //TODO - onPress prop
+        onPress={() => handleAddNewTask(task)}
       >
         <Icon name="chevron-right" size={24} color="#B2B2B2" />
       </TouchableOpacity>
+
+      <AwesomeAlert
+        show={showAlert}
+        showProgress={false}
+        title="Atenção!"
+        message="Você não pode adicionar uma task vazia"
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={false}
+        showCancelButton={true}
+        cancelText="OK"
+        cancelButtonColor='#8257E5'
+        onCancelPressed={() => { setShowAlert(false) }}
+        onConfirmPressed={() => { setShowAlert(false) }}
+      />
     </View>
   )
 }
