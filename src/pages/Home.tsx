@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 import { Header } from '../components/Header';
@@ -9,10 +9,9 @@ import { TodoInput } from '../components/TodoInput';
 
 export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [showAlert, setShowAlert] = useState(false)
 
   function handleAddTask(newTaskTitle: string) {
-    if (tasks.find(task => task.title === newTaskTitle)) return setShowAlert(true)
+    if (tasks.find(task => task.title === newTaskTitle)) return  Alert.alert("Atenção!", "Você não pode criar tarefas com o mesmo nome...")
 
     const newTask = {
       id: new Date().getTime(),
@@ -31,8 +30,22 @@ export function Home() {
   }
 
   function handleRemoveTask(id: number) {
-    const tasksFiltered = tasks.filter(task => task.id !== id);
-    setTasks(tasksFiltered)
+    Alert.alert("Atenção!", "Você deseja mesmo excluir esse item?", [
+      {
+        text: "Sim",
+        onPress: () => {
+          const tasksFiltered = tasks.filter(task => task.id !== id);
+          setTasks(tasksFiltered)
+        }
+      },
+      {
+        text: "Não"
+      }
+    ])
+  }
+
+  function handleEditTask(taskId: number, taskNewTitle: string) {
+
   }
 
   return (
@@ -45,19 +58,7 @@ export function Home() {
         tasks={tasks}
         toggleTaskDone={handleToggleTaskDone}
         removeTask={handleRemoveTask}
-      />
-
-      <AwesomeAlert
-        show={showAlert}
-        showProgress={false}
-        title="Atenção!"
-        message="Você não pode adicionar tasks com o mesmo nome"
-        closeOnTouchOutside={true}
-        closeOnHardwareBackPress={false}
-        showCancelButton={true}
-        cancelText="OK"
-        cancelButtonColor='#8257E5'
-        onCancelPressed={() => { setShowAlert(false) }}
+        editTask={handleEditTask}
       />
     </View>
   )
