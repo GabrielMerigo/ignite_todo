@@ -67,13 +67,11 @@ export function TaskItem({ task, removeTask, toggleTaskDone, editTask, index }: 
             editable={isEditing}
             onSubmitEditing={handleSubmitEditing}
             ref={textInputRef}
-          >
-            {task.title}
-          </TextInput>
+          />
         </TouchableOpacity>
       </View>
 
-      <View>
+      <View style={styles.iconsContainer}>
         {isEditing ? (
           <TouchableOpacity onPress={handleCancelEditing}>
             <Image source={XIcon} />
@@ -84,15 +82,15 @@ export function TaskItem({ task, removeTask, toggleTaskDone, editTask, index }: 
           </TouchableOpacity>
         )}
 
-        <View style={{ width: 1, height: 24, backgroundColor: 'rgba(196, 196, 196, 0.24)' }}></View>
+        <View style={{ width: 1, height: 24, marginLeft: 24, backgroundColor: 'rgba(196, 196, 196, 0.24)' }}></View>
 
         <TouchableOpacity
           testID={`trash-${index}`}
-          style={{ paddingHorizontal: 24}}
+          style={{ paddingHorizontal: 24 }}
           onPress={() => removeTask(task.id)}
           disabled={isEditing}
         >
-          <Image source={trashIcon} style={{ opacity: isEditing ? 0.2 : 1 }} />
+          <Image source={trashIcon} style={{ opacity: isEditing ? 0.2 : 1, ...styles.trashIcon }} />
         </TouchableOpacity>
       </View>
     </>
@@ -136,5 +134,9 @@ const styles = StyleSheet.create({
     color: '#1DB863',
     textDecorationLine: 'line-through',
     fontFamily: 'Inter-Medium'
+  },
+  iconsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   }
 })
