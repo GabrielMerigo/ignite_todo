@@ -90,7 +90,7 @@ export function TaskItem({ task, removeTask, toggleTaskDone, editTask, index }: 
           onPress={() => removeTask(task.id)}
           disabled={isEditing}
         >
-          <Image source={trashIcon} style={{ opacity: isEditing ? 0.2 : 1, ...styles.trashIcon }} />
+          <Image source={trashIcon} style={{ opacity: isEditing ? 0.2 : 1}} />
         </TouchableOpacity>
       </View>
     </>
